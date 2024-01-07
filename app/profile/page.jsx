@@ -27,9 +27,7 @@ const MyProfile = () => {
     router.push(`/update-prompt?id=${post._id}`);
   };
   const handleDelete = async (post) => {
-    const hasConfirmed = confirm(
-      "Are you sure you want to delete this prompt?"
-    );
+    const hasConfirmed = confirm("정말 삭제하시겠습니까?");
 
     if (hasConfirmed) {
       try {
@@ -52,7 +50,7 @@ const MyProfile = () => {
       desc="Wellcom to your personalized profile page"
       data={posts}
       handleEdit={handleEdit}
-      handleDelte={handleDelete}
+      handleDelete={handleDelete}
     />
   );
 };
