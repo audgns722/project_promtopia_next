@@ -43,7 +43,10 @@ npm install next-auth
 npm install bcrypt
 ```
 
-## 파일 구조
+## 프로젝트 구성
+
+<details>
+<summary>filetree</summary>
 
 ```
 ├── app
@@ -56,6 +59,8 @@ npm install bcrypt
 ├── models            # 데이터 모델 정의 (Mongoose 스키마)
 ├── public
 ```
+
+</details>
 
 ## 주요 기능 요약
 
@@ -120,6 +125,119 @@ npm install bcrypt
   사용자 이름, 이메일, 비밀번호, 프로필 정보 등 사용자의 기본적인 정보를 포함
 
   - 특히 사용자 정보를 다루는 모델의 경우, 보안이 매우 중요합니다. 비밀번호와 같은 민감한 정보는 암호화하여 저장해야 합니다.
+
+## 코드 미리보기
+
+<details>
+
+<summary>NextAuth 설정과 인증 공급자</summary>
+
+```javascript
+import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+
+const handler = NextAuth({
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+  ],
+  // ...
+});
+```
+
+</details>
+
+    NextAuth 함수는 Next.js 애플리케이션에서 사용자 인증을 구성합니다.
+    GoogleProvider는 Google OAuth 서비스를 인증 공급자로 사용합니다.
+    clientId와 clientSecret은 환경 변수에서 가져와 Google OAuth를 설정하는 데 사용됩니다.
+
+<details>
+
+<summary>로그인 콜백</summary>
+
+```javascript
+async signIn({ account, profile, user, credentials }) {
+  try {
+    await connectToDB();
+
+    const userExists = await User.findOne({ email: profile.email });
+
+    if (!userExists) {
+      await User.create({
+        email: profile.email,
+        username: profile.name.replace(" ", "").toLowerCase(),
+        image: profile.picture,
+      });
+    }
+
+    return true;
+  } catch (error) {
+    console.log("Error checking if user exists: ", error.message);
+    return false;
+  }
+}
+```
+
+</details>
+
+    signIn 콜백은 사용자가 로그인할 때 호출됩니다.
+    데이터베이스에 연결한 후, 사용자의 이메일로 이미 존재하는 사용자인지 확인합니다.
+    존재하지 않는 경우, 새로운 사용자를 생성합니다.
+    로그인 과정 중 발생한 에러는 콘솔에 로그를 출력하고, 로그인을 중단합니다.
+
+<summary>폼 상태 관리</summary>
+
+<details>
+
+```javascript
+const [submitting, setIsSubmitting] = useState(false);
+const [post, setPost] = useState({ prompt: "", tag: "" });
+```
+
+</details>
+
+    post 상태는 사용자가 입력한 프롬프트의 내용과 태그를 저장합니다. 초기값은 빈 문자열입니다.
+    setPost 함수를 사용하여 사용자의 입력에 따라 post 상태를 업데이트합니다.
+    submitting 상태는 폼이 제출 중인지 여부를 나타냅니다. 네트워크 요청이 진행 중일 때는 true로 설정됩니다.
+
+<details>
+
+<summary>에러 처리 및 네트워크 요청 관리</summary>
+
+```javascript
+const createPrompt = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+
+  try {
+    const response = await fetch("/api/prompt/new", {
+      method: "POST",
+      body: JSON.stringify({
+        prompt: post.prompt,
+        userId: session?.user.id,
+        tag: post.tag,
+      }),
+    });
+
+    if (response.ok) {
+      router.push("/");
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+```
+
+</details>
+
+    try 블록 안에서 /api/prompt/new 엔드포인트로 POST 요청을 보내고 있습니다.
+    요청이 성공적으로 처리되면(response.ok), 사용자를 홈페이지로 리디렉션합니다.
+    요청 중 오류가 발생하면, catch 블록이 실행되어 오류를 콘솔에 로그로 출력합니다.
+    finally 블록은 요청이 성공하든 실패하든 실행되며, submitting 상태를 false로 설정합니다.
 
 ## 참고 내용
 
