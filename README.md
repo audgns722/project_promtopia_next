@@ -7,7 +7,7 @@
 ## [완성작 미리보기](https://project-promtopia-next-6i6z8qs9q-hoonsdevs-projects.vercel.app/)
 
 <div align=center>
-<img width=100% src="https://audgns722.github.io/youtube-react2023/src/assets/img/react-youtubetumb.jpg">
+<img width=100% src="https://github.com/audgns722/project_promtopia_next/blob/main/public/assets/images/promptopia.png?raw=true">
 </div>
 
 ## 주요 기능
