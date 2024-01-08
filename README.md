@@ -187,9 +187,9 @@ async signIn({ account, profile, user, credentials }) {
     존재하지 않는 경우, 새로운 사용자를 생성합니다.
     로그인 과정 중 발생한 에러는 콘솔에 로그를 출력하고, 로그인을 중단합니다.
 
-<summary>폼 상태 관리</summary>
-
 <details>
+   
+<summary>폼 상태 관리</summary>
 
 ```javascript
 const [submitting, setIsSubmitting] = useState(false);
