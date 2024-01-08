@@ -6,6 +6,10 @@
 
 ## [완성작 미리보기](https://project-promtopia-next-6i6z8qs9q-hoonsdevs-projects.vercel.app/)
 
+<div align=center>
+<img width=100% src="https://audgns722.github.io/youtube-react2023/src/assets/img/react-youtubetumb.jpg">
+</div>
+
 ## 주요 기능
 
 - 반응형 디자인: 모든 기기에서 일관된 사용자 경험을 제공합니다. Tailwind CSS를 사용하여 모바일, 태블릿, 데스크톱 환경에서 완벽하게 작동합니다.
