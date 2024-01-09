@@ -19,7 +19,6 @@
 ## 기술 스택
 
 - Frontend  
-   React: 사용자 인터페이스 구축  
    Next.js: 서버 사이드 렌더링 및 페이지 라우팅  
    Tailwind CSS: 유틸리티 우선의 CSS 프레임워크
 - Backend  
